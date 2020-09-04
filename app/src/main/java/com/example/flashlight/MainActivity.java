@@ -16,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int CAMERA_PERMISSION_CODE = 100;
 
+    private boolean isSwitchOn = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +29,24 @@ public class MainActivity extends AppCompatActivity {
     public void flashlight(View view) {
         checkPermission(Manifest.permission.CAMERA,
                 CAMERA_PERMISSION_CODE);
+        this.isSwitchOn = !this.isSwitchOn;
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED) {
+
+            Camera cam = Camera.open();
+            Camera.Parameters p = cam.getParameters();
+            p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+            if (this.isSwitchOn) {
+                cam.setParameters(p);
+                cam.startPreview();
+            } else {
+                cam.stopPreview();
+                cam.release();
+            }
+
+        }
+
+
     }
 
 
@@ -40,12 +60,6 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(MainActivity.this,
                     new String[] { permission },
                     requestCode);
-        } else {
-            Camera cam = Camera.open();
-            Camera.Parameters p = cam.getParameters();
-            p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-            cam.setParameters(p);
-            cam.startPreview();
         }
     }
 
