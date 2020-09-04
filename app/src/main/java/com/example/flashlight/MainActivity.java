@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         params.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
         mCamera.setParameters(params);
         mCamera.stopPreview();
-        mCamera.release();
     }
 
     public void surfaceChanged(SurfaceHolder holder, int format, int width,
